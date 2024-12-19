@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إتمام الشراء</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            max-width: 100%;
+            height: auto;
+            width: 200px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+        }
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        .payment-options {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .payment-options button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .payment-options button:hover {
+            background-color: #0056b3;
+        }
+        .payment-details {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .payment-details label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .payment-details input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .pay-button {
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .pay-button:hover {
+            background-color: #218838;
+        }
+        .language-select {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .language-select select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .product-button {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        .product-button:hover {
+            background-color: #0056b3;
+        }
+        .total-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        payment-methods {
+            margin-top: 30px;
+        }
+        .payment-methods button {
+            padding: 10px;
+            margin: 10px;
+            background: #b68834;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>تفاصيل السلة</h1>
+    <div id="cart-items"></div>
+    <div class="total-price" id="total-price">إجمالي السعر: 0</div>
+    
+    <div class="payment-methods">
+        <h2>اختر طريقة الدفع</h2>
+        <button onclick="selectPayment('Credit Card')">بطاقة ائتمان</button>
+        <button onclick="selectPayment('Cash on Delivery')">الدفع عند الاستلام</button>
+    </div>
+    <div class="container">
+        <div class="logo">
+            <img src="IMG-20241216-WA0023.jpg" alt="الشعار">
+        </div>
+        <h1 id="title">إتمام الشراء</h1>
+        <div class="language-select">
+            <label for="language" id="language-label">اختيار اللغة:</label>
+            <select id="language" onchange="translatePage()">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+                <option value="ru">Русский</option>
+                <option value="nl">Nederlands</option>
+                <option value="zh">中文</option>
+                <option value="it">Italiano</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+        <div id="cart-items"></div>
+        <h2 id="total-label">إجمالي السعر: <span id="total-price">0</span> جنيه مصري</h2>
+        
+        <div class="payment-options">
+            <h3 id="payment-method-label">طرق الدفع:</h3>
+            <button onclick="selectPaymentMethod('instapay')" id="instapay-button">إنستا باي</button>
+            <button onclick="selectPaymentMethod('vodafone')" id="vodafone-button">فودافون كاش</button>
+            <button onclick="selectPaymentMethod('paypal')" id="paypal-button">PayPal</button>
+        </div>
+
+        <div id="payment-details" class="payment-details">
+            <form id="payment-form">
+                <div id="instapay-fields" style="display: none;">
+                    <label id="instapay-label">رقم الحساب البنكي</label>
+                    <input type="text" id="instapay-account" placeholder="أدخل رقم الحساب">
+                    <label id="instapay-password-label">كلمة المرور</label>
+                    <input type="password" id="instapay-password" placeholder="أدخل كلمة المرور">
+                </div>
+                <div id="vodafone-fields" style="display: none;">
+                    <label id="vodafone-label">رقم المحفظة</label>
+                    <input type="text" id="vodafone-number" placeholder="أدخل رقم المحفظة">
+                    <label id="vodafone-password-label">كلمة المرور</label>
+                    <input type="password" id="vodafone-password" placeholder="أدخل كلمة المرور">
+                </div>
+                <div id="paypal-fields" style="display: none;">
+                    <label id="paypal-label">البريد الإلكتروني (PayPal)</label>
+                    <input type="email" id="paypal-email" placeholder="أدخل البريد الإلكتروني">
+                    <label id="paypal-password-label">كلمة المرور</label>
+                    <input type="password" id="paypal-password" placeholder="أدخل كلمة المرور">
+                </div>
+                <div id="save-details-section">
+                    <label for="save-details">Save details for future use</label>
+                    <input id="save-details" type="checkbox">
+                </div>
+                <button type="button" class="pay-button" onclick="processPayment()">إتمام الدفع</button>
+            </form>
+        </div>
+
+        <a href="products.html" class="product-button">Back to Product</a>
+    </div>
+
+    <script>
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const cartItemsContainer = document.getElementById("cart-items");
+        const totalPriceElement = document.getElementById("total-price");
+
+        let totalPrice = 0;
+        cart.forEach(item => {
+            const cartItem = document.createElement("div");
+            cartItem.className = "cart-item";
+
+            cartItem.innerHTML = `
+                <div>
+                    <img src="${item.image}" alt="${item.title}">
+                    <span>${item.title}</span>
+                </div>
+                <div>${item.price.toFixed(2)} جنيه مصري</div>
+            `;
+           
+            cartItemsContainer.appendChild(cartItem);
+            totalPrice += item.price;
+        });
+        totalPriceElement.textContent = `إجمالي السعر: ${totalPrice.toFixed(2)} جنيه مصري`;
+        document.getElementById("total-price").innerText = totalPrice.toFixed(2);
+
+        let selectedMethod = '';
+
+        // اختيار طريقة الدفع
+        function selectPaymentMethod(method) {
+            selectedMethod = method;
+            document.getElementById("payment-details").style.display = "block";
+            document.getElementById("instapay-fields").style.display = method === 'instapay' ? "block" : "none";
+            document.getElementById("vodafone-fields").style.display = method === 'vodafone' ? "block" : "none";
+            document.getElementById("paypal-fields").style.display = method === 'paypal' ? "block" : "none";
+            alert(`تم اختيار طريقة الدفع: ${method}`);
+        }
+
+        // تنفيذ الدفع
+        function processPayment() {
+            let detailsToSave = {};
+            if (selectedMethod === 'instapay') {
+                const account = document.getElementById("instapay-account").value;
+                const password = document.getElementById("instapay-password").value;
+                if (!account || !password) {
+                    alert("يرجى إدخال رقم الحساب وكلمة المرور.");
+                    return;
+                }
+                detailsToSave = { method: 'instapay', account, password };
+                alert("تم إرسال طلب الدفع عبر إنستا باي.");
+            } else if (selectedMethod === 'vodafone') {
+                const number = document.getElementById("vodafone-number").value;
+                const password = document.getElementById("vodafone-password").value;
+                if (!number || !password) {
+                    alert("يرجى إدخال رقم المحفظة وكلمة المرور.");
+                    return;
+                }
+                detailsToSave = { method: 'vodafone', number, password };
+                alert("تم إرسال طلب الدفع عبر فودافون كاش.");
+            } else if (selectedMethod === 'paypal') {
+                const email = document.getElementById("paypal-email").value;
+                const password = document.getElementById("paypal-password").value;
+                if (!email || !password) {
+                    alert("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
+                    return;
+                }
+                detailsToSave = { method: 'paypal', email, password };
+                alert("تم إرسال طلب الدفع عبر PayPal.");
+            } else {
+                alert("يرجى اختيار طريقة دفع.");
+                return;
+            }
+
+            if (document.getElementById("save-details").checked) {
+                localStorage.setItem("paymentDetails", JSON.stringify(detailsToSave));
+            }
+        }
+        const translations = {
+            ar: {
+                title: "إتمام الشراء",
+                languageLabel: "اختيار اللغة:",
+                totalLabel: "إجمالي السعر:",
+                paymentMethodLabel: "طرق الدفع:",
+                instapayButton: "إنستا باي",
+                vodafoneButton: "فودافون كاش",
+                paypalButton: "PayPal",
+                instapayLabel: "رقم الحساب البنكي",
+                instapayPasswordLabel: "كلمة المرور",
+                vodafoneLabel: "رقم المحفظة",
+                vodafonePasswordLabel: "كلمة المرور",
+                paypalLabel: "البريد الإلكتروني (PayPal)",
+                paypalPasswordLabel: "كلمة المرور",
+                saveDetails: "حفظ التفاصيل لاستخدامها لاحقًا",
+                payButton: "إتمام الدفع",
+                backToProduct: "عودة إلى المنتجات",
+                saveDetails: "حفظ التفاصيل لاستخدامها لاحقًا",
+    enterPassword: "أدخل كلمة المرور",
+    enterWalletNumber: "أدخل رقم المحفظة",
+    enterAccountNumber: "أدخل رقم الحساب",
+    enterEmail: "أدخل البريد الإلكتروني",
+    saveDetails: "حفظ التفاصيل لاستخدامها لاحقًا"
+            },
+            en: {
+                title: "Checkout",
+                languageLabel: "Select Language:",
+                totalLabel: "Total Price:",
+                paymentMethodLabel: "Payment Methods:",
+                instapayButton: "Instapay",
+                vodafoneButton: "Vodafone Cash",
+                paypalButton: "PayPal",
+                instapayLabel: "Bank Account Number",
+                instapayPasswordLabel: "Password",
+                vodafoneLabel: "Wallet Number",
+                vodafonePasswordLabel: "Password",
+                paypalLabel: "Email (PayPal)",
+                paypalPasswordLabel: "Password",
+                saveDetails: "Save details for future use",
+                payButton: "Complete Payment",
+                backToProduct: "Back to Products",
+                saveDetails: "Save details for future use",
+    enterPassword: "Enter your password",
+    enterWalletNumber: "Enter wallet number",
+    enterAccountNumber: "Enter account number",
+    enterEmail: "Enter email",
+            saveDetails: "Save details for future use"
+            },
+            ru: {
+                title: "Оформление заказа",
+                languageLabel: "Выбрать язык:",
+                totalLabel: "Общая цена:",
+                paymentMethodLabel: "Способы оплаты:",
+                instapayButton: "ИнстаПэй",
+                vodafoneButton: "Водафон Кэш",
+                paypalButton: "PayPal",
+                instapayLabel: "Номер банковского счета",
+                instapayPasswordLabel: "Пароль",
+                vodafoneLabel: "Номер кошелька",
+                vodafonePasswordLabel: "Пароль",
+                paypalLabel: "Электронная почта (PayPal)",
+                paypalPasswordLabel: "Пароль",
+                saveDetails: "Сохранить данные для будущего использования",
+                payButton: "Завершить оплату",
+                backToProduct: "Назад к продуктам",
+                saveDetails: "Сохранить данные для будущего использования",
+    enterPassword: "Введите пароль",
+    enterWalletNumber: "Введите номер кошелька",
+    enterAccountNumber: "Введите номер счета",
+    enterEmail: "Введите электронную почту",
+    saveDetails: "Сохранить данные для будущего использования"
+            },
+            nl: {
+                title: "Afrekenen",
+                languageLabel: "Taal Selecteren:",
+                totalLabel: "Totale Prijs:",
+                paymentMethodLabel: "Betaalmethoden:",
+                instapayButton: "Instapay",
+                vodafoneButton: "Vodafone Cash",
+                paypalButton: "PayPal",
+                instapayLabel: "Bankrekeningnummer",
+                instapayPasswordLabel: "Wachtwoord",
+                vodafoneLabel: "Walletnummer",
+                vodafonePasswordLabel: "Wachtwoord",
+                paypalLabel: "E-mail (PayPal)",
+                paypalPasswordLabel: "Wachtwoord",
+                saveDetails: "Gegevens opslaan voor toekomstig gebruik",
+                payButton: "Betaling Voltooien",
+                backToProduct: "Terug naar Producten",
+                saveDetails: "Gegevens opslaan voor toekomstig gebruik",
+    enterPassword: "Voer je wachtwoord in",
+    enterWalletNumber: "Voer het walletnummer in",
+    enterAccountNumber: "Voer het rekeningnummer in",
+    enterEmail: "Voer je e-mailadres in",
+    saveDetails: "Gegevens opslaan voor toekomstig gebruik"
+            },
+            zh: {
+                title: "结账",
+                languageLabel: "选择语言:",
+                totalLabel: "总价格:",
+                paymentMethodLabel: "付款方式:",
+                instapayButton: "Instapay",
+                vodafoneButton: "沃达丰现金",
+                paypalButton: "PayPal",
+                instapayLabel: "银行账户号码",
+                instapayPasswordLabel: "密码",
+                vodafoneLabel: "钱包号码",
+                vodafonePasswordLabel: "密码",
+                paypalLabel: "电子邮箱 (PayPal)",
+                paypalPasswordLabel: "密码",
+                saveDetails: "保存详细信息以备将来使用",
+                payButton: "完成支付",
+                backToProduct: "返回产品",
+                saveDetails: "保存详细信息以备将来使用",
+    enterPassword: "输入您的密码",
+    enterWalletNumber: "输入钱包号码",
+    enterAccountNumber: "输入账户号码",
+    enterEmail: "输入电子邮箱",
+    saveDetails: "保存详细信息以备将来使用"
+            },
+            it: {
+                title: "Pagamento",
+                languageLabel: "Seleziona Lingua:",
+                totalLabel: "Prezzo Totale:",
+                paymentMethodLabel: "Metodi di Pagamento:",
+                instapayButton: "Instapay",
+                vodafoneButton: "Vodafone Cash",
+                paypalButton: "PayPal",
+                instapayLabel: "Numero di Conto Bancario",
+                instapayPasswordLabel: "Password",
+                vodafoneLabel: "Numero Portafoglio",
+                vodafonePasswordLabel: "Password",
+                paypalLabel: "Email (PayPal)",
+                paypalPasswordLabel: "Password",
+                saveDetails: "Salva i dettagli per utilizzi futuri",
+                payButton: "Completa il Pagamento",
+                backToProduct: "Torna ai Prodotti",
+                saveDetails: "Salva i dettagli per utilizzi futuri",
+    enterPassword: "Inserisci la tua password",
+    enterWalletNumber: "Inserisci il numero del portafoglio",
+    enterAccountNumber: "Inserisci il numero del conto",
+    enterEmail: "Inserisci la tua email",
+    saveDetails: "Salva i dettagli per utilizzi futuri"
+            },
+            de: {
+                title: "Kasse",
+                languageLabel: "Sprache auswählen:",
+                totalLabel: "Gesamtpreis:",
+                paymentMethodLabel: "Zahlungsmethoden:",
+                instapayButton: "Instapay",
+                vodafoneButton: "Vodafone Cash",
+                paypalButton: "PayPal",
+                instapayLabel: "Bankkontonummer",
+                instapayPasswordLabel: "Passwort",
+                vodafoneLabel: "Wallet-Nummer",
+                vodafonePasswordLabel: "Passwort",
+                paypalLabel: "E-Mail (PayPal)",
+                paypalPasswordLabel: "Passwort",
+                saveDetails: "Details für die zukünftige Nutzung speichern",
+                payButton: "Bezahlung abschließen",
+                backToProduct: "Zurück zu den Produkten",
+                saveDetails: "Details für die zukünftige Nutzung speichern",
+    enterPassword: "Geben Sie Ihr Passwort ein",
+    enterWalletNumber: "Geben Sie die Wallet-Nummer ein",
+    enterAccountNumber: "Geben Sie die Kontonummer ein",
+    enterEmail: "Geben Sie Ihre E-Mail-Adresse ein",
+    saveDetails: "Details für die zukünftige Nutzung speichern"
+            }
+        };
+        function translatePage() {
+    const language = document.getElementById("language").value;
+    const elements = {
+        title: document.getElementById("title"),
+        languageLabel: document.getElementById("language-label"),
+        totalLabel: document.getElementById("total-label"),
+        paymentMethodLabel: document.getElementById("payment-method-label"),
+        instapayButton: document.getElementById("instapay-button"),
+        vodafoneButton: document.getElementById("vodafone-button"),
+        paypalButton: document.getElementById("paypal-button"),
+        instapayLabel: document.getElementById("instapay-label"),
+        instapayPasswordLabel: document.getElementById("instapay-password-label"),
+        vodafoneLabel: document.getElementById("vodafone-label"),
+        vodafonePasswordLabel: document.getElementById("vodafone-password-label"),
+        paypalLabel: document.getElementById("paypal-label"),
+        paypalPasswordLabel: document.getElementById("paypal-password-label"),
+        payButton: document.querySelector(".pay-button"),
+        backToProduct: document.querySelector(".product-button"),
+        saveDetailsLabel: document.querySelector('label[for="save-details"]') // Save details label
+    };
+
+    // Retrieve the translations for the selected language
+    const translation = translations[language];
+
+    // Update the text content of each element
+    Object.keys(elements).forEach(key => {
+        if (elements[key] && translation[key]) {
+            elements[key].textContent = translation[key];
+        }
+    });
+
+    // Update placeholders if applicable
+    if (document.getElementById("instapay-account")) {
+        document.getElementById("instapay-account").placeholder = translation.enterAccountNumber;
+    }
+    if (document.getElementById("instapay-password")) {
+        document.getElementById("instapay-password").placeholder = translation.enterPassword;
+    }
+    if (document.getElementById("vodafone-number")) {
+        document.getElementById("vodafone-number").placeholder = translation.enterWalletNumber;
+    }
+    if (document.getElementById("vodafone-password")) {
+        document.getElementById("vodafone-password").placeholder = translation.enterPassword;
+    }
+    if (document.getElementById("paypal-email")) {
+        document.getElementById("paypal-email").placeholder = translation.enterEmail;
+    }
+    if (document.getElementById("paypal-password")) {
+        document.getElementById("paypal-password").placeholder = translation.enterPassword;
+    }
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <style>
+        body {
+            background-color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .logo-placeholder {
+            text-align: right;
+            margin: 10px 20px;
+        }
+        .logo-placeholder img {
+            max-height: 140px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .product {
+            display: inline-block;
+            margin: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 300px;
+        }
+        .product img {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.product img:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+
+
+        .product img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .product-details {
+            padding: 15px;
+        }
+        .product-details h3 {
+            margin: 0 0 10px;
+        }
+        .product-details p {
+            margin: 0;
+            color: #666;
+        }
+        .product-details .price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #000;
+            margin-top: 10px;
+        }
+        .language-selector {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Section -->
+    <div class="logo-placeholder">
+        <img src="WhatsApp Image 2024-12-16 at 00.08.24_a67af633.jpg" alt="Logo">
+    </div>
+
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <label id="language-label" for="language">اختر اللغة:</label>
+        <select id="language" onchange="changeLanguage()">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="zh">中文</option>
+            <option value="nl">Nederlands</option>
+        </select>
+        <div>
+            <p>
+                <span id="cart-count-label">عدد المنتجات:</span> 
+                <span id="cart-count">0</span>
+            </p>
+            <p>
+                <span id="total-price-label">إجمالي السعر:</span> 
+                <span id="total-price">0</span> 
+            </p>
+        </div>
+        
+    
+    <!-- Products Section -->
+    <div class="content">
+        <h1 id="page-title">منتجاتنا</h1>
+        <div class="product">
+            <img src="IMG-20241216-WA0028.jpg" alt="Product 1">
+            <div class="product-details">
+                <h3 id="product1-title">خداديه نوت</h3>
+                <p id="product1-desc">خداديه تعكس جمال الالهه نوت</p>
+                <p class="price" id="product1-price">499 جنيه مصري</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <img src="IMG-20241216-WA0027.jpg" alt="Product 2">
+            <div class="product-details">
+                <h3 id="product2-title">وساده السماء</h3>
+                <p id="product2-desc">وساده من السماء</p>
+                <p class="price" id="product2-price">499 جنيه مصري</p>
+            </div>
+        </div>
+        
+        <div class="product">
+            <img src="IMG-20241216-WA0026.jpg" alt="Product 3">
+            <div class="product-details">
+                <h3 id="product3-title">خداديه نوت</h3>
+                <p id="product3-desc">خداديه نوت للراحه الابديه</p>
+                <p class="price" id="product3-price">499 جنيه مصري</p>
+            </div>
+        </div>
+        
+        <div class="product">
+            <img src="IMG-20241216-WA0025.jpg" alt="Product 4">
+            <div class="product-details">
+                <h3 id="product4-title">خداديه نوت</h3>
+                <p id="product4-desc">خداديه نوت الهه السماء</p>
+                <p class="price" id="product4-price">499 جنيه مصري</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <img src="IMG-20241216-WA0024.jpg" alt="Product 5">
+            <div class="product-details">
+                <h3 id="product5-title">تصميم فرعوني</h3>
+                <p id="product5-desc">تصميم فريد و مبتكر مستوحى من العصر الفرعونى</p>
+                <p class="price" id="product5-price">499 جنيه مصري</p>
+            </div>
+        </div>
+
+
+    <script>
+       const translations = {
+    ar: {
+        pageTitle: "منتجاتنا",
+        selectLanguageLabel: "اختر اللغة:",
+        product1: { title: "خداديه نوت", desc: "خداديه تعكس جمال الالهه نوت", price: "499 جنيه مصري" },
+        product2: { title: "وساده السماء", desc: "وساده من السماء", price: "499 جنيه مصري" },
+        product3: { title: "خداديه نوت", desc: "خداديه نوت للراحه الابديه", price: "499 جنيه مصري" },
+        product4: { title: "خداديه نوت", desc: "خداديه نوت الهه السماء", price: "499 جنيه مصري" },
+        product5: { title: "تصميم فرعوني", desc: "تصميم فريد و مبتكر مستوحى من العصر الفرعونى", price: "499 جنيه مصري" },
+        cartCount: "عدد المنتجات: ",
+        totalPrice: "إجمالي السعر: ",
+        currency: "جنيه مصري"
+    },
+    en: {
+        pageTitle: "Our Products",
+        selectLanguageLabel: "Choose Language:",
+        product1: { title: "Nout Pillow", desc: "A pillow that reflects the beauty of the goddess Nut", price: "499 EGP" },
+        product2: { title: "Sky Pillow", desc: "A pillow from the sky", price: "499 EGP" },
+        product3: { title: "Nout Pillow", desc: "Nout pillow for eternal comfort", price: "499 EGP" },
+        product4: { title: "Nout Pillow", desc: "Nout, the goddess of the sky", price: "499 EGP" },
+        product5: { title: "Pharaonic Design", desc: "Unique and innovative design inspired by the Pharaonic era", price: "499 EGP" },
+        cartCount: "Number of products: ",
+        totalPrice: "Total price: ",
+        currency: "EGP"
+    },
+    ru: {
+        pageTitle: "Наши продукты",
+        selectLanguageLabel: "Выберите язык:",
+        product1: { title: "Подушка Нут", desc: "Подушка, отражающая красоту богини Нут", price: "499 EGP" },
+        product2: { title: "Небесная подушка", desc: "Подушка с небес", price: "499 EGP" },
+        product3: { title: "Подушка Нут", desc: "Подушка Нут для вечного комфорта", price: "499 EGP" },
+        product4: { title: "Подушка Нут", desc: "Нут, богиня неба", price: "499 EGP" },
+        product5: { title: "Фараонский дизайн", desc: "Уникальный и инновационный дизайн, вдохновленный эпохой фараонов", price: "499 EGP" },
+        cartCount: "Количество продуктов: ",
+        totalPrice: "Общая стоимость: ",
+        currency: "EGP"
+    },
+    de: {
+        pageTitle: "Unsere Produkte",
+        selectLanguageLabel: "Sprache wählen:",
+        product1: { title: "Nout-Kissen", desc: "Ein Kissen, das die Schönheit der Göttin Nut widerspiegelt", price: "499 EGP" },
+        product2: { title: "Himmelskissen", desc: "Ein Kissen aus dem Himmel", price: "499 EGP" },
+        product3: { title: "Nout-Kissen", desc: "Nout-Kissen für ewigen Komfort", price: "499 EGP" },
+        product4: { title: "Nout-Kissen", desc: "Nout, die Göttin des Himmels", price: "499 EGP" },
+        product5: { title: "Pharaonisches Design", desc: "Einzigartiges und innovatives Design inspiriert von der Pharaonenzeit", price: "499 EGP" },
+        cartCount: "Anzahl der Produkte: ",
+        totalPrice: "Gesamtpreis: ",
+        currency: "EGP"
+    },
+    it: {
+        pageTitle: "I nostri prodotti",
+        selectLanguageLabel: "Scegli la lingua:",
+        product1: { title: "Cuscino Nout", desc: "Un cuscino che riflette la bellezza della dea Nut", price: "499 EGP" },
+        product2: { title: "Cuscino del cielo", desc: "Un cuscino dal cielo", price: "499 EGP" },
+        product3: { title: "Cuscino Nout", desc: "Cuscino Nout per un comfort eterno", price: "499 EGP" },
+        product4: { title: "Cuscino Nout", desc: "Nout, la dea del cielo", price: "499 EGP" },
+        product5: { title: "Design faraonico", desc: "Design unico e innovativo ispirato all'era faraonica", price: "499 EGP" },
+        cartCount: "Numero di prodotti: ",
+        totalPrice: "Prezzo totale: ",
+        currency: "EGP"
+    },
+    zh: {
+        pageTitle: "我们的产品",
+        selectLanguageLabel: "选择语言:",
+        product1: { title: "努特枕头", desc: "反映努特女神美丽的枕头", price: "499 EGP" },
+        product2: { title: "天空枕头", desc: "来自天空的枕头", price: "499 EGP" },
+        product3: { title: "努特枕头", desc: "努特枕头，永恒的舒适", price: "499 EGP" },
+        product4: { title: "努特枕头", desc: "努特，天空的女神", price: "499 EGP" },
+        product5: { title: "法老设计", desc: "受法老时代启发的独特创新设计", price: "499 EGP" },
+        cartCount: "产品数量: ",
+        totalPrice: "总价: ",
+        currency: "EGP"
+    },
+    nl: {
+        pageTitle: "Onze producten",
+        selectLanguageLabel: "Kies taal:",
+        product1: { title: "Nout Kussen", desc: "Een kussen dat de schoonheid van de godin Nut weerspiegelt", price: "499 EGP" },
+        product2: { title: "Hemelkussen", desc: "Een kussen uit de hemel", price: "499 EGP" },
+        product3: { title: "Nout Kussen", desc: "Nout kussen voor eeuwig comfort", price: "499 EGP" },
+        product4: { title: "Nout Kussen", desc: "Nout, de godin van de hemel", price: "499 EGP" },
+        product5: { title: "Faraonisch Ontwerp", desc: "Uniek en innovatief ontwerp geïnspireerd door het faraonische tijdperk", price: "499 EGP" },
+        cartCount: "Aantal producten: ",
+        totalPrice: "Totale prijs: ",
+        currency: "EGP"
+    }
+};
+function changeLanguage() {
+    const selectedLang = document.getElementById("language").value;
+    const langData = translations[selectedLang];
+    
+    // تحديث النصوص العامة
+    document.getElementById("page-title").textContent = langData.pageTitle;
+    document.getElementById("language-label").textContent = langData.selectLanguageLabel;
+
+    // تحديث النصوص الخاصة بالسلة
+    document.getElementById("cart-count-label").textContent = langData.cartCount;
+    document.getElementById("total-price-label").textContent = `${langData.totalPrice} ${langData.currency}`;
+
+    // تحديث المنتجات
+    for (let i = 1; i <= 5; i++) {
+        document.getElementById(`product${i}-title`).textContent = langData[`product${i}`].title;
+        document.getElementById(`product${i}-desc`).textContent = langData[`product${i}`].desc;
+        document.getElementById(`product${i}-price`).textContent = 
+    `${langData[`product${i}`].price.split(' ')[0]} ${langData.currency}`;
+    }
+}
+
+
+    </script>
+    <script>
+        // تعريف المصفوفة الخاصة بالسلة
+        let cart = [];
+    
+        // وظيفة لإضافة منتج إلى السلة
+        function addToCart(productTitle, productPrice, productImage) {
+            cart.push({
+                title: productTitle,
+                price: parseFloat(productPrice),
+                image: productImage
+            });
+            alert(`${productTitle} تمت إضافته إلى السلة!`);
+            updateCartCount();
+            updateCartDisplay();
+        }
+    
+        // تحديث عدد المنتجات في السلة
+        function updateCartCount() {
+    const cartCount = cart.length;
+    document.getElementById('cart-count').innerText = cartCount; // تحديث عدد المنتجات
+}
+
+function updateCartDisplay() {
+    const cartContainer = document.getElementById('cart-items');
+    cartContainer.innerHTML = ''; // مسح العناصر الحالية
+    let totalPrice = 0;
+
+    cart.forEach((item, index) => {
+        const cartItem = document.createElement('div');
+        cartItem.style.cssText = "border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;";
+
+        const itemDetails = `
+            <div style="display: flex; align-items: center;">
+                <img src="${item.image}" alt="${item.title}" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                <div>
+                    <p style="margin: 0; font-weight: bold;">${item.title}</p>
+                    <p style="margin: 0; color: #666;">${item.price} ${translations[document.getElementById("language").value].currency}</p>
+                </div>
+            </div>
+        `;
+
+        const removeButton = document.createElement('button');
+        removeButton.innerText = "إزالة";
+        removeButton.style.cssText = "background: red; color: white; border: none; padding: 5px 10px; cursor: pointer;";
+        removeButton.onclick = () => {
+            removeFromCart(index);
+        };
+
+        cartItem.innerHTML = itemDetails;
+        cartItem.appendChild(removeButton);
+        cartContainer.appendChild(cartItem);
+
+        totalPrice += item.price; // حساب السعر الإجمالي
+    });
+
+    document.getElementById('total-price').innerText = totalPrice.toFixed(2); // تحديث السعر الإجمالي
+}
+
+        // إزالة منتج من السلة
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartCount();
+            updateCartDisplay();
+        }
+    
+        // إضافة زر "عرض السلة" في صفحة المنتجات
+        document.addEventListener("DOMContentLoaded", () => {
+            const products = document.querySelectorAll(".product");
+            products.forEach(product => {
+                const title = product.querySelector("h3").innerText;
+                const price = product.querySelector(".price").innerText.replace(' جنيه مصري', '');
+                const image = product.querySelector("img").src;
+    
+                // إضافة زر إلى كل منتج
+                const button = document.createElement("button");
+                button.innerText = "إضافة إلى السلة";
+                button.style.cssText = "padding: 10px; margin-top: 10px; background: #b68834; color: #fff; border: none; cursor: pointer;";
+                button.onclick = () => addToCart(title, price, image);
+                product.querySelector(".product-details").appendChild(button);
+          
+                function goToCheckout() {
+    localStorage.setItem("cart", JSON.stringify(cart)); // حفظ بيانات السلة
+    localStorage.setItem("totalPrice", document.getElementById('total-price').innerText); // حفظ السعر الإجمالي
+    localStorage.setItem("cartCount", cart.length); // حفظ عدد المنتجات
+    window.location.href = "checkout.html"; // الانتقال لصفحة الدفع
+}
+
+localStorage.setItem("cart", JSON.stringify(cart));
+function goToCheckout() {
+    // حفظ السلة في LocalStorage
+    localStorage.setItem("cart", JSON.stringify(cart));
+    // التوجيه إلى صفحة الدفع
+    window.location.href = "checkout.html"; // اسم صفحة الدفع
+}
+
+// تعديل رابط الدفع ليقوم بتوجيه المستخدم لصفحة الدفع
+document.addEventListener("DOMContentLoaded", () => {
+    const checkoutButton = document.querySelector("a[href='checkout.html']");
+    if (checkoutButton) {
+        checkoutButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            goToCheckout();
+        });
+    }
+});
+
+
+
+            });
+        });
+    </script>
+    
+    <!-- مكان عرض السلة -->
+<div style="padding: 20px; margin-top: 20px; border-top: 2px solid #ccc;">
+    <h2>السلة</h2>
+    <div id="cart-items"></div>
+    <!-- زر الدفع -->
+    <div style="margin-top: 20px;">
+        <a href="checkout.html">check</a>
+    </div>
+</div>
+
+    
+    </script>
+   
+</body>
+</html>

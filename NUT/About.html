@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الآلهة نوت</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+
+        body {
+            font-family: 'Amiri', serif; /* خط عربي تقليدي */
+            margin: 0;
+            padding: 0;
+            background-image: url('https://www.textures.com/system/gallery/photos/Ancient/Papyrus/167661/AncientPapyrus0046_1_thumbhuge.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            text-align: center;
+            color: #4b371c; /* لون الحبر القديم */
+        }
+
+        .about-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 3px solid #8c6b4a;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        h1 {
+            color: #6e4a28;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .profile-img {
+    width: 300px; /* عرض ثابت */
+    height: auto; /* الارتفاع يتغير تلقائيًا */
+    border-radius: 10px;
+    object-fit: contain; /* لضمان ظهور الصورة كاملة */
+    margin-top: 20px;
+    border: 3px solid #8c6b4a;
+    animation: float 3s ease-in-out infinite;
+}
+
+
+        .logo {
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 150px;
+            height: auto;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-top: 15px;
+        }
+
+        .language-selector {
+            margin-top: 20px;
+        }
+
+        select {
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        label {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="about-container">
+        <!-- اللوجو -->
+        <img src="IMG-20241216-WA0023.jpg" alt="لوجو فرعوني" class="logo">
+        <!-- العنوان -->
+        <h1 id="title">الآلهة نوت</h1>
+
+        <!-- الصورة -->
+        <img src="5699937023282737(JPG).jpg" alt="صورة للآلهة نوت" class="profile-img">
+
+        <!-- النص -->
+        <p id="content">
+            نوت هي إلهة السماء في الميثولوجيا المصرية القديمة. وُصفت بأنها الأم التي تحنو بجسدها على الأرض.
+        </p>
+
+        <!-- اختيار اللغة -->
+        <div class="language-selector">
+            <label for="language" id="language-label">اختر اللغة:</label>
+            <select id="language" onchange="translateContent()">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+                <option value="ru">Русский</option>
+                <option value="nl">Nederlands</option>
+                <option value="zh">中文</option>
+                <option value="it">Italiano</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            "ar": {
+                title: "الآلهة نوت",
+                content: "نوت هي إلهة السماء في الميثولوجيا المصرية القديمة. وُصفت بأنها الأم التي تحنو بجسدها على الأرض.",
+                languageLabel: "اختر اللغة:"
+            },
+            "en": {
+                title: "The Goddess Nut",
+                content: "Nut is the sky goddess in ancient Egyptian mythology. She is described as the mother arching her body over the Earth.",
+                languageLabel: "Choose Language:"
+            },
+            "ru": {
+                title: "Богиня Нут",
+                content: "Нут — богиня неба в древнеегипетской мифологии. Она изображается матерью, склонившей своё тело над землёй.",
+                languageLabel: "Выберите язык:"
+            },
+            "nl": {
+                title: "De Godin Noet",
+                content: "Noet is de hemelgodin in de oude Egyptische mythologie. Ze wordt beschreven als de moeder die haar lichaam over de aarde buigt.",
+                languageLabel: "Kies taal:"
+            },
+            "zh": {
+                title: "女神努特",
+                content: "努特是古埃及神话中的天空女神。她被描述为用身体保护大地的母亲。",
+                languageLabel: "选择语言:"
+            },
+            "it": {
+                title: "La Dea Nut",
+                content: "Nut è la dea del cielo nella mitologia dell'antico Egitto. È descritta come la madre che si curva sul corpo della Terra.",
+                languageLabel: "Scegli la lingua:"
+            },
+            "de": {
+                title: "Die Göttin Nut",
+                content: "Nut ist die Himmelsgöttin in der altägyptischen Mythologie. Sie wird als die Mutter beschrieben, die ihren Körper über die Erde wölbt.",
+                languageLabel: "Sprache wählen:"
+            }
+        };
+
+        function translateContent() {
+            const lang = document.getElementById("language").value;
+            document.getElementById("title").innerText = translations[lang].title;
+            document.getElementById("content").innerText = translations[lang].content;
+            document.getElementById("language-label").innerText = translations[lang].languageLabel;
+        }
+    </script>
+</body>
+</html>
